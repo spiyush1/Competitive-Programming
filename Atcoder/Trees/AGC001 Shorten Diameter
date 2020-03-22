@@ -1,0 +1,84 @@
+//Very good use of diameter related properties and some tough thinking
+
+#include<bits/stdc++.h>
+#define mod 1000000007
+#define ll long long int
+#define f first
+#define s second
+#define mp make_pair
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n,k;
+	cin>>n>>k;
+	vector<vector<int> > a(n);
+	int r[n][n];
+	vector<pair<int, int> > v(n);
+	for(int i =0,b,c; i<n-1; i++)
+	{
+		cin>>b>>c, --b,--c;
+		a[b].push_back(c);
+		a[c].push_back(b);
+		r[b][c]=r[c][b]=1;
+		v.push_back({b,c});
+	}
+	int k2= k;
+	k /=2;
+	vector<array<int,2> >ans;
+	for(int i =0; i<n; i++)
+	{
+		queue<int> 	q;
+		q.push(i);
+		bool vis[n]={false};
+		int dist[n]={0};
+		vis[i]=1;
+		while(!q.empty())
+		{
+			int h = q.front();
+			q.pop();
+			for(auto it: a[h])
+			{
+				if(!vis[it])
+				{
+					dist[it]=dist[h]+1;
+					vis[it]=true;
+					q.push(it);
+				}
+			}
+		}
+		int count=0;
+		for(int j =0; j<n ;j++)
+		{
+			r[i][j]=dist[j];
+			if(dist[j]>k)
+				count++;
+		}
+		ans.push_back({count,i});
+	}
+	
+	sort(ans.begin(),ans.end());
+	if(k2 &1)
+	{
+	    int y = INT_MAX;
+		int h = ans[0][1],j = ans[1][1];
+		for(auto it: v)
+		{
+		    int h=it.f,j=it.s,count=0;
+		    for(int i=0;i<n; i++)
+		    {
+    			if(r[h][i]<=k || r[j][i]<=k)
+    				;
+    			else
+    				count++;
+		    }
+		    y = min(y,count);
+		}
+		cout<<y<<endl;
+	}
+	else
+		cout<<ans[0][0]<<endl;
+	return 0;
+}
