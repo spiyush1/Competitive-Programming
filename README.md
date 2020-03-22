@@ -1,2 +1,2 @@
 # Competitive-Programming
-Random Codes
+Random Codes from various coding platforms
